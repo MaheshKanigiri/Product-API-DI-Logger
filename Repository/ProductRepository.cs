@@ -50,9 +50,9 @@ namespace Product_API_DI.Repository
             else { return (prod); };
         }
 
-        public List<Product> updateEmployee(Product product)
+        public List<Product> updateEmployee(int id,Product product)
         {
-            var oldProduct = _context.Products.Find(product.Id);
+            var oldProduct = ProductGetProductById(id);
             if (oldProduct == null)
             {
                 throw new ResultNotFoundException("Product not Found!");

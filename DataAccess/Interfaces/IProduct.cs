@@ -13,7 +13,7 @@ namespace Product_API_DI.DataAccess.Interfaces
         //DELETE-PRODUCT
         string DeleteProduct(int id);
         //UPDATE-[PUT] PRODUCT
-        List<Product> updateEmployee(Product product);
+        List<Product> updateEmployee(int id,Product product);
 
     }
 }

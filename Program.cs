@@ -17,16 +17,11 @@ builder.Services.AddDbContext<ProductdbContext>(opt =>
 opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //Add HTTPLogging
-builder.Services.AddHttpLogging(logging =>
-{
-    logging.LoggingFields = HttpLoggingFields.All;
-    //logging.RequestHeaders.Add("sec-ch-ua");
-    //logging.ResponseHeaders.Add("MyResponseHeader");
-    //logging.MediaTypeOptions.AddText("application/javascript");
-    //logging.RequestBodyLogLimit = 4096;
-    //logging.ResponseBodyLogLimit = 4096;
+//builder.Services.AddHttpLogging(logging =>
+//{
+//    logging.LoggingFields = HttpLoggingFields.All;
 
-});
+//});
 
 
 //Add service for Dependency Injection
@@ -34,16 +29,10 @@ builder.Services.AddScoped<IProduct, ProductRepository>();
 
 
 //Add Services for CORS
-builder.Services.AddCors((opt) =>
+builder.Services.AddCors(p => p.AddPolicy("angular", build =>
 {
-    opt.AddPolicy("swagger", (build) =>
-    {
-        build
-        .AllowAnyOrigin()
-        .AllowAnyMethod();
-
-    });
-});
+    build.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+}));
 
 
 var app = builder.Build();
@@ -52,7 +41,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseHttpLogging();   //for HttpLogging
+    //app.UseHttpLogging();   //for HttpLogging
 }
 
 app.UseHttpsRedirection();
@@ -61,6 +50,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseCors("swagger"); //for Cors
+app.UseCors("angular"); //for Cors
 
 app.Run();
